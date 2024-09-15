@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_quill import st_quill
 from utils.sidebar import sidebar
 
 sidebar()
@@ -19,7 +20,6 @@ st.session_state.additional_email_info = st.text_area(
 # Button to draft personalized email
 if st.button("Generate Email"):
     st.session_state["email_draft_done"] = True
-
 # Display email draft after button click
 if st.session_state.get("email_draft_done"):
     st.write("### Personalized Email Draft")

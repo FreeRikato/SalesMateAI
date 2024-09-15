@@ -4,6 +4,7 @@ import os
 
 # Research function
 def research(
+    model_name="Max",
     prospect_name="",
     company_name="",
     additional_information="",
@@ -82,7 +83,7 @@ def research(
     """
 
     response = generate(
-        "Max", research_prompt, additional_context, temperature, streaming
+        model_name, research_prompt, additional_context, temperature, streaming
     )
     # Define the folder and file paths
     log_folder = "./logs"
@@ -94,6 +95,8 @@ def research(
     # Save the response to the file
     with open(file_path, "w") as file:
         file.write(response)
+
+    return response
 
 
 # research(

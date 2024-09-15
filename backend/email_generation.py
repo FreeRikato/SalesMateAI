@@ -4,6 +4,7 @@ import os
 
 # Research function
 def write(
+    model="Max",
     research_report="",
     product_catalog="",
     additional_context="",
@@ -53,7 +54,7 @@ def write(
     """
 
     response = generate(
-        "Max", generation_prompt, additional_context, temperature, streaming
+        model, generation_prompt, additional_context, temperature, streaming
     )
     # Define the folder and file paths
     log_folder = "./logs"
@@ -65,6 +66,8 @@ def write(
     # Save the response to the file
     with open(file_path, "w") as file:
         file.write(response)
+
+    return response
 
 
 file_path = "./logs/research_report.md"

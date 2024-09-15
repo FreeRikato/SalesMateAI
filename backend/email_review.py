@@ -4,6 +4,7 @@ import os
 
 # Research function
 def review(
+    model_name="Max",
     draft_email="",
     email_template="",
     additional_context="Proceed with system message",
@@ -34,7 +35,7 @@ def review(
     """
 
     response = generate(
-        "Max", review_prompt, additional_context, temperature, streaming
+        model_name, review_prompt, additional_context, temperature, streaming
     )
     # Define the folder and file paths
     log_folder = "./logs"
@@ -46,6 +47,8 @@ def review(
     # Save the response to the file
     with open(file_path, "w") as file:
         file.write(response)
+
+    return response
 
 
 file_path = "./logs/draft_email.txt"
