@@ -10,3 +10,5 @@ data/*
 !data/.gitkeep
 poetry.lock
 pyproject.toml
+
+backend/local_db.json

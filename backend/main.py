@@ -1,15 +1,23 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.responses import Response
 from research import research
 from email_generation import write
 from email_review import review
 from email_sender import send_email
 from utils import pdf2md
+import os
 
 app = FastAPI()
 
+# Constants for file paths
+LOGS_DIR = "./logs"
+PRODUCT_CATALOG_PATH = "../data/product_catalog"
+EMAIL_TEMPLATE_TEXT_PATH = "../data/email_templates.txt"
+EMAIL_TEMPLATE_PDF_PATH = "../data/email_templates.pdf"
 
-# Define the payload model for validation
+
+# Payload models
 class ResearchPayload(BaseModel):
     model: str
     prospect_name: str
@@ -20,63 +28,11 @@ class ResearchPayload(BaseModel):
     streaming: bool
 
 
-# Define the endpoint
-@app.post("/research-analysis")
-async def research_analysis(payload: ResearchPayload):
-    # Execute the research function asynchronously
-    markdown_response = research(
-        payload.model,
-        prospect_name=payload.prospect_name,
-        company_name=payload.company_name,
-        additional_information=payload.additional_information,
-        additional_context=payload.additional_context,
-        temperature=payload.temperature,
-        streaming=payload.streaming,
-    )
-
-    # Return the markdown content as a response
-    return markdown_response
-
-
-# Define the payload model for validation
 class EmailGenerationPayload(BaseModel):
     model: str
     additional_context: str
     temperature: float
     streaming: bool
-
-
-# Define the endpoint
-@app.post("/generate-email")
-async def generate_email(payload: EmailGenerationPayload):
-    # Execute the research function asynchronously
-    file_path = "./logs/research_report.md"
-    product_catalog_file_path = "../data/product_catalog"
-
-    product_catalog = ""
-
-    if product_catalog_file_path.lower().endswith(".txt"):
-        product_catalog_file_path += ".txt"
-        with open(product_catalog_file_path, "r") as file:
-            product_catalog = file.read()
-    elif product_catalog_file_path.lower().endswith(".pdf"):
-        product_catalog_file_path += ".pdf"
-        product_catalog = pdf2md(product_catalog_file_path)
-
-    with open(file_path, "r") as file:
-        research_report = file.read()
-
-    markdown_response = write(
-        payload.model,
-        research_report=research_report,
-        product_catalog=product_catalog,
-        additional_context=payload.additional_context,
-        temperature=payload.temperature,
-        streaming=payload.streaming,
-    )
-
-    # Return the markdown content as a response
-    return markdown_response
 
 
 class EmailReviewPayload(BaseModel):
@@ -86,29 +42,77 @@ class EmailReviewPayload(BaseModel):
     streaming: bool
 
 
-# Define the endpoint
+class EmailSendPayload(BaseModel):
+    to_email: str
+    subject: str
+    gmail_user: str
+    app_password: str
+
+
+# Utility function to read file content
+def read_file(file_path: str) -> str:
+    """Read content from a file."""
+    with open(file_path, "r") as file:
+        return file.read()
+
+
+def load_product_catalog(file_path: str) -> str:
+    """Load product catalog from a txt or pdf file."""
+    if file_path.endswith(".txt"):
+        return read_file(file_path)
+    elif file_path.endswith(".pdf"):
+        return pdf2md(file_path)
+    return ""
+
+
+# Endpoints
+@app.post("/research-analysis")
+def research_analysis(payload: ResearchPayload):
+    """
+    Perform research analysis based on the provided model and details.
+    """
+    markdown_response = research(
+        payload.model,
+        prospect_name=payload.prospect_name,
+        company_name=payload.company_name,
+        additional_information=payload.additional_information,
+        additional_context=payload.additional_context,
+        temperature=payload.temperature,
+        streaming=payload.streaming,
+    )
+    return Response(content=markdown_response, media_type="text/markdown")
+
+
+@app.post("/generate-email")
+async def generate_email(payload: EmailGenerationPayload):
+    """
+    Generate an email based on the research report and product catalog.
+    """
+    research_report = read_file(os.path.join(LOGS_DIR, "research_report.md"))
+    product_catalog = load_product_catalog(PRODUCT_CATALOG_PATH)
+
+    markdown_response = write(
+        payload.model,
+        research_report=research_report,
+        product_catalog=product_catalog,
+        additional_context=payload.additional_context,
+        temperature=payload.temperature,
+        streaming=payload.streaming,
+    )
+    return Response(content=markdown_response, media_type="text/markdown")
+
+
 @app.post("/review-email")
 async def review_email(payload: EmailReviewPayload):
-    # Execute the research function asynchronously
-    file_path = "./logs/draft_email.txt"
-    email_template_file_path_text = "../data/email_templates.txt"
-    email_template_file_path_pdf = "../data/email_templates.pdf"
+    """
+    Review a draft email using the provided email templates.
+    """
+    draft_email = read_file(os.path.join(LOGS_DIR, "draft_email.txt"))
 
-    email_template = ""
-
-    if email_template_file_path_text.lower():
-        email_template_file_path = email_template_file_path_text
-        with open(email_template_file_path, "r") as file:
-            email_template = file.read()
-    elif email_template_file_path_pdf.lower():
-        email_template_file_path = email_template_file_path_pdf
-        email_template = pdf2md(email_template_file_path)
+    if os.path.exists(EMAIL_TEMPLATE_TEXT_PATH):
+        email_template = read_file(EMAIL_TEMPLATE_TEXT_PATH)
     else:
-        print("No such file exists")
-
-    with open(file_path, "r") as file:
-        draft_email = file.read()
-    review(draft_email, email_template)
+        email_template = pdf2md(EMAIL_TEMPLATE_PDF_PATH)
 
     markdown_response = review(
         payload.model,
@@ -118,25 +122,17 @@ async def review_email(payload: EmailReviewPayload):
         temperature=payload.temperature,
         streaming=payload.streaming,
     )
-
-    # Return the markdown content as a response
-    return markdown_response
+    return Response(content=markdown_response, media_type="text/plain")
 
 
-class EmailSendPayload(BaseModel):
-    to_email: str
-    subject: str
-    gmail_user: str
-    app_password: str
-
-
-# Define the endpoint
 @app.post("/send-email")
 async def email_send(payload: EmailSendPayload):
-    # Execute the research function asynchronously
-    with open("../backend/logs/final_email.txt", "r") as file:
-        email_body = file.read()
-    markdown_response = send_email(
+    """
+    Send an email using the provided SMTP credentials and email content.
+    """
+    email_body = read_file(os.path.join(LOGS_DIR, "final_email.txt"))
+
+    send_email(
         to_email=payload.to_email,
         subject=payload.subject,
         body_text=email_body,
@@ -144,5 +140,4 @@ async def email_send(payload: EmailSendPayload):
         app_password=payload.app_password,
     )
 
-    # Return the markdown content as a response
     return {"progress": "Mail Sent Successfully"}

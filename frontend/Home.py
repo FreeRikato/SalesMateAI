@@ -2,6 +2,7 @@ import streamlit as st
 from utils.sidebar import sidebar
 from utils.remove_existing_file import remove_existing_file
 import os
+import glob
 
 # Set page configuration to wide mode
 st.set_page_config(layout="wide")
@@ -13,6 +14,30 @@ if "company_name" not in st.session_state:
     st.session_state.company_name = ""
 if "additional_info" not in st.session_state:
     st.session_state.additional_info = ""
+
+if "product_catalog_present" not in st.session_state:
+    st.session_state.product_catalog_present = False
+if "email_template_present" not in st.session_state:
+    st.session_state.email_template_present = False
+
+if "sent_email" in st.session_state and st.session_state.sent_email:
+    # Path to the directory
+    data_dir = "../data"
+
+    # Get a list of all .txt and .pdf files in the directory
+    txt_files = glob.glob(os.path.join(data_dir, "*.txt"))
+    pdf_files = glob.glob(os.path.join(data_dir, "*.pdf"))
+
+    # Combine both lists
+    files_to_remove = txt_files + pdf_files
+
+    # Remove each file
+    for file in files_to_remove:
+        try:
+            os.remove(file)
+        except Exception as e:
+            print(f"Error removing {file}: {e}")
+
 
 # Title for the home page
 st.title("Prospect Research and Email Personalization Tool")
@@ -56,6 +81,8 @@ with col2:
         # Save the uploaded file
         with open(os.path.join(save_path, product_catalog.name), "wb") as f:
             f.write(product_catalog.getbuffer())
+
+        st.session_state.product_catalog_present = True
         st.success(
             f"Product catalog saved to {os.path.join(save_path, product_catalog.name)}"
         )
@@ -71,6 +98,7 @@ with col2:
         # Save the uploaded file
         with open(os.path.join(save_path, email_template.name), "wb") as f:
             f.write(email_template.getbuffer())
+        st.session_state.email_template_present = True
         st.success(
             f"Email template saved to {os.path.join(save_path, email_template.name)}"
         )

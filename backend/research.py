@@ -85,6 +85,7 @@ def research(
     response = generate(
         model_name, research_prompt, additional_context, temperature, streaming
     )
+
     # Define the folder and file paths
     log_folder = "./logs"
     file_path = os.path.join(log_folder, "research_report.md")
@@ -97,11 +98,3 @@ def research(
         file.write(response)
 
     return response
-
-
-# research(
-#     "Mike Mayes",
-#     "Salesforce",
-#     "Mike Mayes is the Senior Vice President of Sales at Salesforce. He has been with the company for over 10 years and has extensive experience in enterprise software sales.",
-# )
-# Call the research function

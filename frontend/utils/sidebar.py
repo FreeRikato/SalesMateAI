@@ -4,7 +4,7 @@ import streamlit as st
 def sidebar():
     # Initialize session state for model, temperature, and streaming if not set
     if "model_choice_human" not in st.session_state:
-        st.session_state.model_choice_human = "⚡ Max"
+        st.session_state.model_choice_human = "Max"
     if "temperature" not in st.session_state:
         st.session_state.temperature = 0.7
     if "stream_toggle" not in st.session_state:
@@ -15,9 +15,9 @@ def sidebar():
 
         # Mapping of human-readable names to actual model identifiers
         model_mapping = {
-            "⚡ Max": "llama3_groq",
-            "🔬 Ava": "perplexity",
-            "🧠 Sophia": "claude 3.5 sonnet",
+            "Max": "llama3_groq",
+            "Ava": "perplexity",
+            "Sophia": "claude 3.5 sonnet",
         }
 
         # Dropdown menu to select models (persist using session state)
@@ -40,12 +40,6 @@ def sidebar():
         )
 
         # Checkbox to toggle streaming (persist using session state)
-        st.session_state.stream_toggle = st.checkbox(
-            "Streaming", value=st.session_state.stream_toggle
-        )
-
-        # Send email button
-        if st.button("Send Email"):
-            st.success(
-                f"Email sent successfully with {st.session_state.model_choice_human} model, temperature {st.session_state.temperature}, and streaming set to {st.session_state.stream_toggle}!"
-            )
+        # st.session_state.stream_toggle = st.checkbox(
+        # "Streaming", value=st.session_state.stream_toggle
+        # )

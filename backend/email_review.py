@@ -64,8 +64,6 @@ if email_template_file_path_text.lower():
 elif email_template_file_path_pdf.lower():
     email_template_file_path = email_template_file_path_pdf
     email_template = pdf2md(email_template_file_path)
-else:
-    print("No such file exists")
 
 
 with open(file_path, "r") as file:
