@@ -4,6 +4,7 @@ from research import research
 from email_generation import write
 from email_review import review
 from email_sender import send_email
+from utils import pdf2md
 
 app = FastAPI()
 
