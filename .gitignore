@@ -1,1 +1,12 @@
 .SalesMateAIvenv/
+.env
+__pycache__
+# Ignore all files inside the logs and data directories
+backend/logs/*
+data/*
+
+# Allow the directories to be committed
+!backend/logs/.gitkeep
+!data/.gitkeep
+poetry.lock
+pyproject.toml

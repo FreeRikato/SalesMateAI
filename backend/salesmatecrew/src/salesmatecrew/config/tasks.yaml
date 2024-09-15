@@ -1,0 +1,142 @@
+research_task:
+  description: >
+    Gather actionable, personalized insights about a potential lead with a focus on identifying Pain Points/Opportunities. 
+    Use the following details: Prospect name: {prospect_name}, Company name: {company_name}, and Additional information: {additional_information} to generate an effective sales email aligned with the Company catalog: {company_catalog}. Follow these steps:
+    
+    <STEPS> 
+    1. Pain Points/Opportunities: Dive into industry trends and the company's recent developments to identify key challenges or opportunities. Focus on how these insights align with the prospect's needs and how the Company catalog: {company_catalog} can address these specific issues.
+    2. Company Information: Provide a brief overview of the company, focusing on its industry, key products/services, and any recent news or milestones relevant to identifying pain points or opportunities.
+    3. Prospect Background: Summarize the prospect's role and any relevant projects or initiatives, with an emphasis on identifying areas where they may be seeking solutions or facing challenges.
+    4. Personalization Hook: Pinpoint any relevant mutual connections, social media activity, or public mentions (like awards, articles, or speaking engagements) that might hint at pain points or opportunities, which can be referenced in your outreach.
+    5. Tone Consideration: Analyze the prospect’s public communication style (formal/informal, technical/business language) to suggest the best tone for addressing the identified pain points or opportunities in the email.
+    </STEPS>
+
+
+    Follow these rules:
+    - If the action and action input are NONE then generate email from gathered information
+    - Only include websites that are especially relevant to {prospect_name} and {company_name}. Do not include any website that are not directly related to {prospect_name} or {company_name}. 
+    - Do not include sources that are not authentic. If the content of the page includes a list of websites or looks like the front page of a website, do not include it in the list!
+    - Summarize the prospect research in a few sentences. Make the summary as long as necessary to include all the relevant information, but not too long for a research report.
+    - Include the URL of the article where you found the information.
+    - Include a minimum of 7 websites and a maximum of 10 websites in the list.
+    - When using the Search Tool, your search query should be concise (for example, "Achievements of {prospect_name} or Potential Pain Points of {company_name}").
+
+    IMPORTANT INSTRUCTIONS ABOUT USING TOOLS: When using tools, DO NOT ESCAPE the underscore character "_", EVER. If you need to use a tool and pass in a parameter called 'search_query', you should write 'search_query', not 'search\_query'. THIS IS VERY IMPORTANT, else the tool will not work.
+
+  expected_output: >
+    A markdown document for the research report. The report should be elaborate with structured points containing:
+    - Company Overview
+    - Prospect's Role & Background
+    - Personalization Hook
+    - Potential Pain Points or Opportunities
+    - Suggested Outreach Tone
+    - URL of the website where the information was found
+
+    Here is an example of the format of a research report that you could include in the document:
+    
+    <EXAMPLE>
+      ## Company Overview:
+      ---
+      # Prospect Research
+      - Acme Corp is a global provider of cloud-based software solutions for the e-commerce industry. 
+      - Acme recently secured $50 million in Series C funding and expanded its operations to Europe.
+      - Their flagship product helps retailers manage online inventory, optimize shipping, and enhance customer experience. 
+      ---
+      ## Prospect’s Role & Background:
+      - John Smith is the VP of Operations at Acme Corp.
+      - He has over 15 years of experience in supply chain management and e-commerce operations.
+      - John has been with Acme for 5 years and has led several initiatives to improve logistical efficiency and customer satisfaction.
+      ---
+      ## Recent Achievements or Activities:
+      - John recently spoke at a logistics conference about innovations in e-commerce supply chain management.
+      - Acme was also featured in a trade publication for their successful expansion into the European market.
+      ---
+      ## Personalization Hook:
+      - John’s recent speaking engagement at the logistics conference is a great entry point for outreach.
+      - Acknowledging his expertise in optimizing supply chains and referencing his leadership in Acme’s European expansion adds credibility to the outreach.
+      ---
+      ## Potential Pain Points or Opportunities:
+      - There may also be challenges in scaling their current infrastructure to support global operations.
+      - With Acme's expansion into Europe, they are likely facing new supply chain complexities due to differing regulations, shipping logistics, and market demands.
+      - Offering solutions to streamline cross-border logistics or optimize customer delivery timelines can be of interest.
+      ---
+      ## Suggested Outreach Tone:
+      - The tone should be professional yet friendly, acknowledging John’s expertise while highlighting how your solution can support Acme’s ambitious growth strategy.
+      - Focus on the technical aspects of the problem (logistics) but keep the language accessible and concise.
+      ---
+      ## Sources:
+      - [Acme corp trade publication](https://www.Acmeblogs/articles/12325)
+      - [John Smith logistics conference](https://www.logistics_with_john_smith/articles/1243)
+    </EXAMPLE>
+
+write_email_task:
+  description: >
+    Create a highly personalized sales email targeted at a prospect based on the research provided. 
+    The goal is to grab the recipient’s attention, demonstrate understanding of their needs, and offer a solution that aligns with their pain points or opportunities based on {company_catalog} with respect to sender {company_name}.
+    Follow these guidelines to generate the email:
+
+    <GUIDELINES>
+      - Subject Line: Craft a compelling, personalized subject line that draws from the provided research (e.g., referencing a recent company achievement or a challenge the prospect may face).
+      - Greeting: Use a friendly and professional tone to address the prospect by name.
+      - Opening Line (Personalization Hook): Use information about the prospect’s recent activities or their company’s achievements to immediately engage them. Mention something specific from the research, such as a LinkedIn post or industry trend, to show you have done your homework.
+      - Value Proposition: Clearly explain how your product/service can help solve a problem or seize an opportunity the prospect may have. This should be based on their role and company’s current situation, as uncovered in the research.
+      - Call to Action (CTA): Politely ask for a next step, such as scheduling a quick meeting or providing feedback. Be specific about the action and provide a time frame if possible.
+      - Sign-off: Close the email professionally, reiterating your name and contact details.
+      - Length: Keep the email brief (4-6 sentences max) but impactful, ensuring every sentence adds value. Avoid fluff or generic statements.
+    </GUIDELINES>
+
+    Follow these rules:
+      - If the action and action input are NONE then generate email from gathered information
+      - Only include websites that are especially relevant to {prospect_name} and {company_name}. Do not include any website that are not directly related to {prospect_name} or {company_name}. 
+      - Do not include sources that are not authentic. If the content of the page includes a list of websites or looks like the front page of a website, do not include it in the list!
+      - Summarize the prospect research in a few sentences. Make the summary as long as necessary to include all the relevant information, but not too long for a research report.
+      - Include the URL of the article where you found the information.
+      - Include a minimum of 7 websites and a maximum of 10 websites in the list.
+      - When using the Search Tool, your search query should be concise (for example, "Achievements of {prospect_name} or Potential Pain Points of {company_name}").
+
+
+    IMPORTANT INSTRUCTIONS ABOUT USING TOOLS: When using tools, DO NOT ESCAPE the underscore character "_", EVER. If you need to use a tool and pass in a parameter called 'search_query', you should write 'search_query', not 'search\_query'. THIS IS VERY IMPORTANT, else the tool will not work.
+
+  expected_output: >
+    A text document with email using specified guidelines.
+    
+    Email should consists of:
+    - Subject Line:
+    - Greeting: 
+    - Opening (Personalization Hook):
+    - Value proposition:
+    - Call to Action (CTA):
+    - Sign-off
+
+    Here is an example of a document that you are expected to produce on an elaborate and strucutured manner:
+    <EXAMPLE>
+      Subject: Optimizing Acme Corp’s Supply Chain for European Expansion
+
+      Hi [{prospect_name}],
+
+      As Acme scales globally, managing diverse regulations and cross-border logistics must be a complex challenge. Our solution helps streamline supply chain operations, ensuring smoother international shipping and faster delivery timelines, which could greatly enhance your team’s efficiency in this new market.
+
+      I’d love to schedule a quick 15-minute call next week to explore how we can support Acme's continued growth. Are you available on Tuesday or Wednesday?
+
+      Best regards,
+
+    </EXAMPLE>
+
+
+review_email_task:
+  description: >
+    Review and optimize a sales email generated for a prospect by comparing it with a winning email template. 
+    You must ensure that the generated email adheres to best practices in sales outreach, is personalized, and is optimized for engagement.
+    Update the Sender name and Sender company from end of {email_template} and Use the email template as reference for you to optimize and don't use its content since it is just a template but use its tone and structure. Also, don't leave any placeholders. You can refer prospect name as in {prospect_name}, prospect company name as in {company_name} and sender name/company at the end of {email_template}. 
+    
+    Follow these rules:
+    - Do not truncate the information or change the order of the elements. 
+    - Do not modify the content of the email.
+    - Do not add any additional information to the email.
+
+    {email_template}
+
+  expected_output: >
+    This output will be saved as a Text file and sent to the Prospects.
+    Return ONLY the contents of the Text template, without any tripple quotes like '```', '```html' or any other text. 
+    Match the sender name and company at the end of {email_template}
