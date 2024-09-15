@@ -24,7 +24,7 @@ def pdf2md(path):
 def generate(
     model_name="Max",
     system_message="Give a short funny intro of yourself",
-    context="Hi there! Introduce yourself",
+    context="Proceed with System message",
     temperature=1,
     streaming=False,
 ):
@@ -64,14 +64,13 @@ def generate(
     elif model_name == "Ava":
 
         llm = ChatPerplexity(
-            pplx_api_key=perplexity_key,
             model="llama-3.1-sonar-small-128k-online",
-            max_tokens=256,
+            max_tokens=1024,
             temperature=temperature,
             streaming=streaming,
             api_key=perplexity_key,
         )
-        chain = prompt | llm
+        chain = prompt | llm  # LCEL - Langchain Express Language
         response = chain.invoke(
             {
                 "system_message": system_message,
