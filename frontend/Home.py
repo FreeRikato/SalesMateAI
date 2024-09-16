@@ -2,7 +2,6 @@ import streamlit as st
 from utils.sidebar import sidebar
 from utils.remove_existing_file import remove_existing_file
 import os
-import glob
 
 # Set page configuration to wide mode
 st.set_page_config(layout="wide")
@@ -19,24 +18,6 @@ if "product_catalog_present" not in st.session_state:
     st.session_state.product_catalog_present = False
 if "email_template_present" not in st.session_state:
     st.session_state.email_template_present = False
-
-if "sent_email" in st.session_state and st.session_state.sent_email:
-    # Path to the directory
-    data_dir = "../data"
-
-    # Get a list of all .txt and .pdf files in the directory
-    txt_files = glob.glob(os.path.join(data_dir, "*.txt"))
-    pdf_files = glob.glob(os.path.join(data_dir, "*.pdf"))
-
-    # Combine both lists
-    files_to_remove = txt_files + pdf_files
-
-    # Remove each file
-    for file in files_to_remove:
-        try:
-            os.remove(file)
-        except Exception as e:
-            print(f"Error removing {file}: {e}")
 
 
 # Title for the home page
@@ -102,11 +83,3 @@ with col2:
         st.success(
             f"Email template saved to {os.path.join(save_path, email_template.name)}"
         )
-
-# Summary or next step instructions
-st.write(
-    """
-After entering the prospect details and uploading the necessary files, navigate through the pages in the sidebar
-to perform research, generate a personalized email, and review the optimized email.
-"""
-)

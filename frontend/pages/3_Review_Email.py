@@ -11,7 +11,7 @@ if "email_template_present" not in st.session_state:
     st.session_state.email_template_present = False
 # Initialize session state for optimizing email
 if "additional_optimization_info" not in st.session_state:
-    st.session_state.additional_optimization_info = ""
+    st.session_state.additional_optimization_info = "Proceed with system message"
 
 # Section for optimizing email (persist using session state)
 st.session_state.additional_optimization_info = st.text_area(

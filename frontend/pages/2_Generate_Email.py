@@ -9,7 +9,7 @@ st.title("Generate Personalized Email")
 
 # Initialize session state for email draft info
 if "additional_email_info" not in st.session_state:
-    st.session_state.additional_email_info = ""
+    st.session_state.additional_email_info = "Proceed with system message"
 
 if "product_catalog_present" not in st.session_state:
     st.session_state.product_catalog_present = False

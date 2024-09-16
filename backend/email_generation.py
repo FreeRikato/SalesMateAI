@@ -23,8 +23,13 @@ def write(
     <TASK> 
         Create a highly personalized sales email targeted at the prospect based on the research provided. 
         The goal is to grab the recipient's attention, demonstrate understanding of their needs, and offer a solution that aligns with their pain points or opportunities based on {product_catalog} with respect to the prospect.
+        
+        Additional context from the human: {additional_context}
+        
+        Check if the additional context from human is other than "Proceed with system message", if any then follow it for email generation and drafting.
     </TASK> 
     <GUIDELINES>
+        - In case there is additional context from the human, generate and draft the email based on the provided additional context
         - IMPORTANT: PLAIN TEXT FORMAT WITHOUT MARKDOWN SYNTAX
         - IMPORTANT: ONLY FACTS AND INFORMATION FROM {product_catalog} AS EVIDENCE. NO HALLUCINATIONS OR EVIDENCELESS STATEMENTS. THE EXAMPLE BELOW IS PROVIDED FOR YOU AS A DIRECTION AND SO DON'T COPY IT.
         - Subject Line: Craft a compelling, personalized subject line that draws from the provided research 

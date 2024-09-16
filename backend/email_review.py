@@ -25,12 +25,14 @@ def review(
         
         drafted email: {draft_email}
         email template or winning email: {email_template}
+        additional context from the human: {additional_context}
         
         Update the your contact present with the contact information present in the end of the email template or winning email and Use the email template as reference for you to optimize and don't use its content since it is just a template but use its tone and structure. Also, don't leave any placeholders. 
     </TASK>
     <RULES>
         - THIS IS THE FINAL EMAIL SO DON'T LEAVE ANY REMARKS OR FEEDBACK AT THE START OR END, PLACEHOLDERS OR ANYTHING SINCE THIS HAS TO BE SENT TO THE PROSPECT 
         - MAKE SURE THE CONTACT INFORMATION (MAIL SENDER NAME, COMPANY AND ANYTHING ELSE) IS STRICTLY EXTRACTED FROM THE EXAMPLE EMAIL TEMPLATE AND DON'T ASSUME ANYTHING WHICH IS MOSTLY PRESENT IN THE END
+        - In case there is additional context from the human, review the email based on the provided additional context
     </RULES> 
     """
 
@@ -49,23 +51,3 @@ def review(
         file.write(response)
 
     return response
-
-
-file_path = "./logs/draft_email.txt"
-email_template_file_path_text = "../data/email_templates.txt"
-email_template_file_path_pdf = "../data/email_templates.pdf"
-
-email_template = ""
-
-if email_template_file_path_text.lower():
-    email_template_file_path = email_template_file_path_text
-    with open(email_template_file_path, "r") as file:
-        email_template = file.read()
-elif email_template_file_path_pdf.lower():
-    email_template_file_path = email_template_file_path_pdf
-    email_template = pdf2md(email_template_file_path)
-
-
-with open(file_path, "r") as file:
-    draft_email = file.read()
-review(draft_email, email_template)

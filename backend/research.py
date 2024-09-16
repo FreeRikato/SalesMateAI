@@ -22,6 +22,7 @@ def research(
         Prospect name: {prospect_name} 
         Company name: {company_name}
         Additional information: {additional_information} 
+        Addtional context from the human: {additional_context}
     </TASK> 
     <STEPS> 
         A markdown document for the research report. The report should be elaborate with structured points containing:
@@ -30,12 +31,14 @@ def research(
         - Personalization Hook
         - Potential Pain Points or Opportunities
         - URL of the website where the information was found
+        0. Check if the additional context from human is other than "Proceed with system message", if any then follow it for research
         1. Pain Points/Opportunities: Dive into industry trends and the company's recent developments to identify key challenges or opportunities. 
         2. Company Information: Provide a brief overview of the company, focusing on its industry, key products/services, and any recent news or milestones relevant to identifying pain points or opportunities.
         3. Prospect Background: Summarize the prospect's role and any relevant projects or initiatives, with an emphasis on identifying areas where they may be seeking solutions or facing challenges.
         4. Personalization Hook: Pinpoint any relevant mutual connections, social media activity, or public mentions (like awards, articles, or speaking engagements) that might hint at pain points or opportunities, which can be referenced in your outreach.
     </STEPS>
     <RULES>
+        - In case there is additional context from the human, modify the research based on the provided additional context
         - Only include websites that are especially relevant to {prospect_name} and {company_name}. Do not include any website that are not directly related to {prospect_name} or {company_name}. 
         - Do not include sources that are not authentic. If the content of the page includes a list of websites or looks like the front page of a website, do not include it in the list!
         - Summarize the prospect research in a few sentences. Make the summary as long as necessary to include all the relevant information, but not too long for a research report.

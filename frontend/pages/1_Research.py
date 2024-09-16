@@ -24,7 +24,7 @@ if "research_results" not in st.session_state:
         None  # Initialize session state for research results
     )
 if "additional_research_info" not in st.session_state:
-    st.session_state["additional_research_info"] = "Proceed with human message"
+    st.session_state["additional_research_info"] = "Proceed with system message"
 # Title of the app
 st.title("Research Prospect and Company")
 

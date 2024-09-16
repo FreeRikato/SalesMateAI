@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
-
+import os
+import glob
 from utils.sidebar import sidebar
 
 sidebar()
@@ -66,6 +67,21 @@ if st.button(
 
             # Check if the response is successful
             if response.status_code == 200:
+                data_dir = "../data"
+
+                # Get a list of all .txt and .pdf files in the directory
+                txt_files = glob.glob(os.path.join(data_dir, "*.txt"))
+                pdf_files = glob.glob(os.path.join(data_dir, "*.pdf"))
+
+                # Combine both lists
+                files_to_remove = txt_files + pdf_files
+
+                # Remove each file
+                for file in files_to_remove:
+                    try:
+                        os.remove(file)
+                    except Exception as e:
+                        print(f"Error removing {file}: {e}")
                 st.success(
                     f"Email sent successfully to {st.session_state.recipient_email}!"
                 )

@@ -39,7 +39,7 @@ def sidebar():
             help="Control randomness/creativity of the model",
         )
 
-        # Checkbox to toggle streaming (persist using session state)
+        # Checkbox to toggle streaming
         # st.session_state.stream_toggle = st.checkbox(
         # "Streaming", value=st.session_state.stream_toggle
         # )

@@ -64,8 +64,7 @@ def generate(
     elif model_name == "Ava":
 
         llm = ChatPerplexity(
-            model="llama-3.1-sonar-small-128k-online",
-            max_tokens=1024,
+            model="llama-3.1-sonar-huge-128k-online",
             temperature=temperature,
             streaming=streaming,
             api_key=perplexity_key,
@@ -82,9 +81,8 @@ def generate(
     elif model_name == "Sophia":
 
         llm = ChatAnthropic(
-            model="claude-3-haiku-20240307",
+            model="claude-3-5-sonnet-20240620",
             temperature=temperature,
-            max_tokens=1024,
             streaming=streaming,
             api_key=anthropic_key,
         )
