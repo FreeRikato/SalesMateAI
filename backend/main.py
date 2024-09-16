@@ -7,6 +7,7 @@ from email_review import review
 from email_sender import send_email
 from utils import pdf2md
 import os
+import json  # Import the json module
 
 app = FastAPI()
 
@@ -15,6 +16,7 @@ LOGS_DIR = "./logs"
 PRODUCT_CATALOG_PATH = "../data/product_catalog"
 EMAIL_TEMPLATE_TEXT_PATH = "../data/email_templates.txt"
 EMAIL_TEMPLATE_PDF_PATH = "../data/email_templates.pdf"
+LOCAL_DB_PATH = "local_db.json"  # Path for the local database file
 
 
 # Payload models
@@ -65,6 +67,22 @@ def load_product_catalog(file_path: str) -> str:
     return ""
 
 
+# New utility functions for the local database
+def load_db():
+    """Load the local database from a JSON file."""
+    if os.path.exists(LOCAL_DB_PATH):
+        with open(LOCAL_DB_PATH, "r") as f:
+            return json.load(f)
+    else:
+        return {}
+
+
+def save_db(data):
+    """Save data to the local database JSON file."""
+    with open(LOCAL_DB_PATH, "w") as f:
+        json.dump(data, f, indent=4)
+
+
 # Endpoints
 @app.post("/research-analysis")
 def research_analysis(payload: ResearchPayload):
@@ -80,6 +98,26 @@ def research_analysis(payload: ResearchPayload):
         temperature=payload.temperature,
         streaming=payload.streaming,
     )
+
+    # Load the current database
+    db = load_db()
+
+    # Prepare the data to be stored
+    prospect_data = {
+        "prospect_name": payload.prospect_name,
+        "company_name": payload.company_name,
+        "research_analysis_response": markdown_response,
+    }
+
+    # Append the new data to the 'research_analysis' list in the database
+    if "research_analysis" not in db:
+        db["research_analysis"] = []
+
+    db["research_analysis"].append(prospect_data)
+
+    # Save the updated database
+    save_db(db)
+
     return Response(content=markdown_response, media_type="text/markdown")
 
 
@@ -139,5 +177,24 @@ async def email_send(payload: EmailSendPayload):
         gmail_user=payload.gmail_user,
         app_password=payload.app_password,
     )
+
+    # Load the current database
+    db = load_db()
+
+    # Prepare the data to be stored
+    email_data = {
+        "prospect_email": payload.to_email,
+        "subject": payload.subject,
+        "text_body": email_body,
+    }
+
+    # Append the new data to the 'sent_emails' list in the database
+    if "sent_emails" not in db:
+        db["sent_emails"] = []
+
+    db["sent_emails"].append(email_data)
+
+    # Save the updated database
+    save_db(db)
 
     return {"progress": "Mail Sent Successfully"}
