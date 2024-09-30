@@ -73,22 +73,3 @@ def write(
         file.write(response)
 
     return response
-
-
-file_path = "./logs/research_report.md"
-product_catalog_file_path = "../data/product_catalog"
-
-product_catalog = ""
-
-if product_catalog_file_path.lower().endswith(".txt"):
-    product_catalog_file_path += ".txt"
-    with open(product_catalog_file_path, "r") as file:
-        product_catalog = file.read()
-elif product_catalog_file_path.lower().endswith(".pdf"):
-    product_catalog_file_path += ".pdf"
-    product_catalog = pdf2md(product_catalog_file_path)
-
-with open(file_path, "r") as file:
-    research_report = file.read()
-
-write(research_report, product_catalog)
