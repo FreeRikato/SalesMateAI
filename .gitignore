@@ -10,5 +10,6 @@ data/*
 !data/.gitkeep
 poetry.lock
 pyproject.toml
-
+.venv
+Procfile
 backend/local_db.json
