@@ -47,7 +47,7 @@ def generate(
     if model_name == "Max":
 
         llm = ChatGroq(
-            model="llama-3.1-8b-instant",
+            model="llama-3.1-70b-versatile",
             temperature=temperature,
             streaming=streaming,
             api_key=groq_key,
